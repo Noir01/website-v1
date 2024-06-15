@@ -50,6 +50,113 @@ const { title } = Astro.props;
 			<div class="particle"></div>
 			<div class="particle"></div>
 			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
 		</div>
 	</body>
 </html>
@@ -95,7 +202,7 @@ const { title } = Astro.props;
 		z-index: 1;
 	}
 
-	@for $i from 1 through 30 {
+	@for $i from 1 through 137 {
 		@keyframes particle-animation-#{$i} {
 			100% {
 				transform: translate3d((random(90) * 1vw), (random(90) * 1vh), (random(100) * 1px));
@@ -103,7 +210,8 @@ const { title } = Astro.props;
 		}
 		
 		.particle:nth-child(#{$i}){
-			animation: particle-animation-#{$i} 60s infinite;
+			$duration: 30 + random(60);
+			animation: particle-animation-#{$i} #{$duration}s infinite;
 			$size: random(5) + 5 + px;
 			opacity: calc(random(100) / 100);
 			height: $size;
