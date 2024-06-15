@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
         particle.velocityY = 0;
     });
 
-    document.addEventListener("mousemove", (event) => {
+    document.addEventListener("mousemove", () => {
         mouse.x = event.clientX;
         mouse.y = event.clientY;
         particles.forEach(particle => {
@@ -27,22 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 particle.velocityX += directionX;
                 particle.velocityY += directionY;
             }
-        });
-    });
-
-    document.addEventListener("click", (event) => {
-        particles.forEach(particle => {
-            const dx = mouse.x - particle.x;
-            const dy = mouse.y - particle.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            const forceDirectionX = dx / distance;
-            const forceDirectionY = dy / distance;
-            const force = 1 - (distance / 500); // stronger force when closer
-            const directionX = forceDirectionX * force * 5;
-            const directionY = forceDirectionY * force * 5;
-
-            particle.velocityX -= directionX;
-            particle.velocityY -= directionY;
         });
     });
 
