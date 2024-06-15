@@ -19,12 +19,13 @@ const { title } = Astro.props;
 	<body>
 		<div id="particle-container">
 			<slot />
-		
+
 			<!-- Generate 137 particle elements -->
 			{Array.from({ length: 137 }).map((_, i) => (
-			<div class="particle"></div>
+				<div class="particle"></div>
 			))}
 		</div>
+		<script> import "../scripts/interactive-particles.js";</script>
 	</body>
 </html>
 <style lang="scss" is:global>
