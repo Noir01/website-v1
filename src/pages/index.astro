@@ -3,18 +3,26 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Portfolio" description="My corner of the internet :)">
-	<main>
-	</main>
+  <!-- 
+    This "card" will appear in the middle of the page-content 
+    flex container from Layout.astro 
+  -->
+  <div class="card">
+    <h1>Hello, World!</h1>
+    <p>Lorem ipsum</p>
+  </div>
 </Layout>
 
 <style>
-	main {
-		margin: auto;
-		padding: 1rem;
-		width: 800px;
-		max-width: calc(100% - 2rem);
-		color: white;
-		font-size: 20px;
-		line-height: 1.6;
-	}
+  .card {
+    /* Adjust styles to your liking */
+    background-color: #222;
+    color: #fff;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    text-align: center;
+  }
 </style>

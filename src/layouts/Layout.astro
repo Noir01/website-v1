@@ -1,7 +1,7 @@
 ---
 interface Props {
-	title: string;
-	description: string;
+  title: string;
+  description: string;
 }
 
 const { title, description } = Astro.props;
@@ -9,89 +9,112 @@ const { title, description } = Astro.props;
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-		<link rel="manifest" href="/site.webmanifest">
-		<meta name="generator" content={Astro.generator} />
-		<link rel="sitemap" href="/sitemap-index.xml" />
-		<title>{title}</title>
-	</head>
-	<body>
-		<div id="particle-container">
-			<slot />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <!-- Favicons + other meta omitted for brevity -->
+    <title>{title}</title>
+  </head>
+  <body>
+    <!-- 
+      Use a wrapper div to center everything (including <slot />) 
+      both horizontally and vertically
+    -->
+    <div id="particle-container">
+      <div class="page-content">
+        <slot />
+      </div>
+      <!-- 
+        Generate 137 particle elements 
+        (as in your original code)
+      -->
+      {Array.from({ length: 137 }).map((_, i) => (
+        <div class="particle"></div>
+      ))}
+    </div>
 
-			<!-- Generate 137 particle elements -->
-			{Array.from({ length: 137 }).map((_, i) => (
-				<div class="particle"></div>
-			))}
-		</div>
-		<script> import "../scripts/interactive-particles.js";</script>
-	</body>
+    <script>
+      import "../scripts/interactive-particles.js";
+    </script>
+  </body>
 </html>
-<style lang="scss" is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-		background-size: 224px;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-	#particle-container {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: -1;
-	}
-	.particle {
-		position: absolute;
-		border-radius: 50%;
-		z-index: 1;
-	}
 
-	@for $i from 1 through 137 {
-		@keyframes particle-animation-#{$i} {
-			100% {
-				transform: translate3d((random(90) * 1vw), (random(90) * 1vh), (random(100) * 1px));
-			}
-		}
-		
-		.particle:nth-child(#{$i}){
-			$duration: 30 + random(60);
-			animation: particle-animation-#{$i} #{$duration}s infinite;
-			$size: random(5) + 5 + px;
-			opacity: calc(random(100) / 100);
-			height: $size;
-			width: $size;
-			animation-delay: -$i * .2s;
-			transform: translate3d((random(90) * 1vw), (random(90) * 1vh), (random(100) * 1px));
-			background: hsl(random(360), 70%, 50%);
-		}
-	}
+<style lang="scss" is:global>
+  :root {
+    --accent: 136, 58, 234;
+    --accent-light: 224, 204, 250;
+    --accent-dark: 49, 10, 101;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      rgb(var(--accent-light)) 30%,
+      white 60%
+    );
+  }
+
+  html {
+    font-family: system-ui, sans-serif;
+    background: #13151a;
+    background-size: 224px;
+  }
+
+  code {
+    font-family:
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
+  }
+
+  #particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+  }
+
+  /* Center the page content in the middle of the screen */
+  .page-content {
+    /* Make sure the container takes the full screen height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    /* If you need scroll behavior for longer pages, 
+       use padding on sections or place a wrapper differently */
+  }
+
+  /* Example SCSS for the particle animations */
+  @for $i from 1 through 137 {
+    @keyframes particle-animation-#{$i} {
+      100% {
+        transform: translate3d((random(90) * 1vw), (random(90) * 1vh), (random(100) * 1px));
+      }
+    }
+    
+    .particle:nth-child(#{$i}) {
+      $duration: 30 + random(60);
+      animation: particle-animation-#{$i} #{$duration}s infinite;
+      $size: random(5) + 5 + px;
+      opacity: calc(random(100) / 100);
+      height: $size;
+      width: $size;
+      animation-delay: -$i * .2s;
+      transform: translate3d((random(90) * 1vw), (random(90) * 1vh), (random(100) * 1px));
+      background: hsl(random(360), 70%, 50%);
+    }
+  }
 </style>
