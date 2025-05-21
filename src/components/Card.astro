@@ -1,39 +1,28 @@
----
-interface Props {
-    title: string;
-    body: string;
-    href: string;
-}
-const { href, title, body } = Astro.props;
----
+---  
+interface Props {  
+  title?: string;
+  size?: number;
+}  
+const { title, size = 1} = Astro.props;  
+---  
 
-<li class="big-card">
-    <a href={href}>
-        <h2>{title}</h2>
-        <p>{body}</p>
-    </a>
-</li>
-<style>
-    .big-card {
-        list-style: none;
-        display: block; /* Changed from flex to block for a big card layout */
-        padding: 20px; /* Increased padding for bigger appearance */
-        background-color: #23262d;
-        border-radius: 7px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Simplified shadow for subtle effect */
-		z-index: 1;
-    }
-    .big-card > a {
-        display: block; /* Ensure the link fills the card */
-        text-decoration: none;
-        color: white; /* Keep text color consistent */
-    }
-    h2 {
-        margin: 0 0 10px 0; /* Adjusted margin for spacing */
-        font-size: 2rem; /* Increased size for emphasis */
-    }
-    p {
-        margin: 0; /* Adjusted margin for text block */
-        font-size: 1rem; /* Adjusted font size for readability */
-    }
+<div class="card" style={`--scale: ${size}`}>  
+  {title && <h2>{title}</h2>}  
+  <slot />  
+</div>  
+
+<style>  
+.card {
+  background: #1e1e1e;
+  color: #e0e0e0;
+  /* scaleable dimensions */
+  width: calc(80vw * var(--scale));
+  max-width: calc(600px * var(--scale));
+  padding: calc(2rem * var(--scale));
+  border-radius: calc(8px * var(--scale));
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  aspect-ratio: 3 / 2;       /* keeps a nice rectangle */
+  text-align: center;
+  margin: 0 auto;
+}
 </style>

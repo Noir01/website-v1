@@ -1,54 +1,47 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const particles = document.querySelectorAll('.particle');
-    const mouse = { x: 0, y: 0 };
+  const particles = document.querySelectorAll('.particle');
+  const mouse = { x: 0, y: 0 };
 
-    particles.forEach(particle => {
-        particle.x = Math.random() * window.innerWidth;
-        particle.y = Math.random() * window.innerHeight;
-        particle.velocityX = 0;
-        particle.velocityY = 0;
+  particles.forEach(p => {
+    p.x = Math.random() * window.innerWidth;
+    p.y = Math.random() * window.innerHeight;
+    p.velocityX = 0;
+    p.velocityY = 0;
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+
+    particles.forEach(p => {
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const dist = Math.hypot(dx, dy);
+      const maxDist = 200;
+      if (dist < maxDist) {
+        const force = (maxDist - dist) / maxDist * 0.6;
+        p.velocityX += (dx / dist) * force;
+        p.velocityY += (dy / dist) * force;
+      }
     });
+  });
 
-    document.addEventListener("mousemove", () => {
-        mouse.x = event.clientX;
-        mouse.y = event.clientY;
-        particles.forEach(particle => {
-            const dx = particle.x - mouse.x;
-            const dy = particle.y - mouse.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            const forceDirectionX = dx / distance;
-            const forceDirectionY = dy / distance;
-            const maxDistance = 200; // max distance to affect particles
-            const force = (maxDistance - distance) / maxDistance; // stronger force when closer
-            const directionX = forceDirectionX * force * 0.6;
-            const directionY = forceDirectionY * force * 0.6;
+  function animate() {
+    particles.forEach(p => {
+      p.x += p.velocityX;
+      p.y += p.velocityY;
+      p.velocityX *= 0.95;
+      p.velocityY *= 0.95;
 
-            if (distance < maxDistance) {
-                particle.velocityX += directionX;
-                particle.velocityY += directionY;
-            }
-        });
+      if (p.x > innerWidth) p.x = 0;
+      if (p.x < 0) p.x = innerWidth;
+      if (p.y > innerHeight) p.y = 0;
+      if (p.y < 0) p.y = innerHeight;
+
+      p.style.transform = `translate(${p.x}px, ${p.y}px)`;
     });
+    requestAnimationFrame(animate);
+  }
 
-    function animateParticles() {
-        particles.forEach(particle => {
-            particle.x += particle.velocityX;
-            particle.y += particle.velocityY;
-
-            particle.velocityX *= 0.95; // friction
-            particle.velocityY *= 0.95;
-
-            // Boundaries
-            if (particle.x > window.innerWidth) particle.x = 0;
-            if (particle.x < 0) particle.x = window.innerWidth;
-            if (particle.y > window.innerHeight) particle.y = 0;
-            if (particle.y < 0) particle.y = window.innerHeight;
-
-            particle.style.transform = `translate(${particle.x}px, ${particle.y}px)`;
-        });
-
-        requestAnimationFrame(animateParticles);
-    }
-
-    animateParticles();
+  animate();
 });
