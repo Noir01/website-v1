@@ -1,9 +1,12 @@
 ---  
 import Layout from '../layouts/Layout.astro';  
+
+import Head from '../components/Head.astro';
 import Card from '../components/Card.astro';  
 ---  
 
-<Layout title="My Portfolio" description="Welcome!">  
+<Layout title="My Portfolio" description="Welcome!">
+  <Head title="Home" permalink="/" />
   <Card title="Hey there, I'm Aniruddh">  
     <!-- Replace with your photo, about-me text, etc. -->  
     <p>Lorem Ipsum</p>  
