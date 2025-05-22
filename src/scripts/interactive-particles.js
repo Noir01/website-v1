@@ -9,22 +9,22 @@ document.addEventListener("DOMContentLoaded", () => {
     p.velocityY = 0;
   });
 
-  document.addEventListener("mousemove", (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+  // document.addEventListener("mousemove", (e) => {
+  //   mouse.x = e.clientX;
+  //   mouse.y = e.clientY;
 
-    particles.forEach(p => {
-      const dx = p.x - mouse.x;
-      const dy = p.y - mouse.y;
-      const dist = Math.hypot(dx, dy);
-      const maxDist = 200;
-      if (dist < maxDist) {
-        const force = (maxDist - dist) / maxDist * 0.6;
-        p.velocityX += (dx / dist) * force;
-        p.velocityY += (dy / dist) * force;
-      }
-    });
-  });
+  //   particles.forEach(p => {
+  //     const dx = p.x - mouse.x;
+  //     const dy = p.y - mouse.y;
+  //     const dist = Math.hypot(dx, dy);
+  //     const maxDist = 200;
+  //     if (dist < maxDist) {
+  //       const force = (maxDist - dist) / maxDist * 0.6;
+  //       p.velocityX += (dx / dist) * force;
+  //       p.velocityY += (dy / dist) * force;
+  //     }
+  //   });
+  // });
 
   function animate() {
     particles.forEach(p => {
