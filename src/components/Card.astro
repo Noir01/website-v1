@@ -21,8 +21,38 @@ const { title, size = 1} = Astro.props;
   padding: calc(2rem * var(--scale));
   border-radius: calc(8px * var(--scale));
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  aspect-ratio: 3 / 2;       /* keeps a nice rectangle */
+  aspect-ratio: 3 / 2;
   text-align: center;
   margin: 0 auto;
+
+  /* start un-rotated, then animate to 30° */
+  transform: rotate(0deg);
+  transform-origin: center;
+  animation: tilt 3s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 700px) and (min-height: 400px) {
+  .card {
+    animation: tilt 3s ease-out forwards;
+  }
+}
+
+@keyframes tilt {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(15deg); }
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    aspect-ratio: auto;
+    margin: 0;
+    border-radius: 0;
+    padding: calc(1rem * var(--scale));
+    transform: none !important;
+    animation: none !important;
+  }
 }
 </style>
