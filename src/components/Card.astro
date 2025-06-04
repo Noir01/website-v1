@@ -25,7 +25,7 @@ const { title, size = 1} = Astro.props;
   text-align: center;
   margin: 0 auto;
 
-  /* start un-rotated, then animate to 30° */
+  /* start un-rotated, then animate to 15° */
   transform: rotate(0deg);
   transform-origin: center;
   animation: tilt 3s ease-out forwards;
@@ -124,7 +124,7 @@ const { title, size = 1} = Astro.props;
       returnAnim?.cancel();
       returnAnim = card.animate([
         { transform: `rotate(${start}deg)` },
-        { transform: 'rotate(0deg)' }
+        { transform: 'rotate(15deg)' }
       ], { duration: 2000, easing: 'ease-out' });
       returnAnim.finished.then(() => { returnAnim = null; }).catch(() => {});
     };
