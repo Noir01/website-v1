@@ -9,7 +9,7 @@ import Head from "../components/Head.astro"
   <Head title="Home" permalink="/" />
   <body>  
     <div id="particle-container">  
-      {Array.from({ length: 137 }).map((_, i) => (  
+      {Array.from({ length: 137 }).map(() => (  
         <div class="particle" />  
       ))}  
     </div>  
