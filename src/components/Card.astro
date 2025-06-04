@@ -9,9 +9,9 @@ const { title, size = 1} = Astro.props;
 <div class="card" style={`--scale: ${size}`}>  
   {title && <h2>{title}</h2>}  
   <slot />  
-</div>  
+</div>
 
-<style>  
+<style>
 .card {
   background: #1e1e1e;
   color: #e0e0e0;
@@ -25,7 +25,7 @@ const { title, size = 1} = Astro.props;
   text-align: center;
   margin: 0 auto;
 
-  /* start un-rotated, then animate to 30° */
+  /* start un-rotated, then animate to 15° */
   transform: rotate(0deg);
   transform-origin: center;
   animation: tilt 3s ease-out forwards;
@@ -42,6 +42,27 @@ const { title, size = 1} = Astro.props;
   to   { transform: rotate(15deg); }
 }
 
+/* Spin jitter for hover effect */
+/*
+@keyframes spin-jitter {
+  0%   { transform: rotate(360deg); }
+  95%  { transform: rotate(360deg); }
+  96%  { transform: rotate(358deg); }
+  98%  { transform: rotate(362deg); }
+  100% { transform: rotate(360deg); }
+}
+*/
+
+/* rule used by the script when hovering */
+.hover-spin {
+  animation: hover-spin 8000ms linear forwards; /*, spin-jitter 8000ms linear forwards */
+}
+
+@keyframes hover-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 @media (max-width: 600px) {
   .card {
     width: 100vw;
@@ -56,3 +77,71 @@ const { title, size = 1} = Astro.props;
   }
 }
 </style>
+
+<script>
+  const card = document.querySelector('.card') as HTMLElement | null;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const bigViewport = window.matchMedia('(min-width: 700px) and (min-height: 400px)');
+
+  if (!prefersReducedMotion.matches && bigViewport.matches && card) {
+    let spinAnim: Animation | null = null;
+    let returnAnim: Animation | null = null;
+    // let jitterAnim: Animation | null = null;
+
+    const currentRotation = (): number => {
+      const { transform } = getComputedStyle(card);
+      if (transform === 'none') return 0;
+      const matrix = new DOMMatrixReadOnly(transform);
+      const angle = Math.round(Math.atan2(matrix.b, matrix.a) * (180 / Math.PI));
+      return (angle + 360) % 360;
+    };
+
+    /*
+    const playJitter = (base: number) => {
+      jitterAnim?.cancel();
+      jitterAnim = card.animate([
+        { transform: `rotate(${base}deg)` },
+        { transform: `rotate(${base - 2}deg)` },
+        { transform: `rotate(${base + 2}deg)` },
+        { transform: `rotate(${base}deg)` }
+      ], { duration: 400, easing: 'ease-in-out' });
+    };
+    */
+
+    const startSpin = () => {
+      const start = currentRotation();
+      spinAnim?.cancel();
+      spinAnim = card.animate([
+        { transform: `rotate(${start}deg)` },
+        { transform: `rotate(${start + 360}deg)` }
+      ], { duration: 8000, easing: 'linear' });
+      spinAnim.finished.then(() => {
+        spinAnim = null;
+        // playJitter(start + 360);
+      }).catch(() => {});
+    };
+
+    const returnToZero = () => {
+      const start = currentRotation();
+      spinAnim?.cancel();
+      // jitterAnim?.cancel();
+      returnAnim?.cancel();
+      returnAnim = card.animate([
+        { transform: `rotate(${start}deg)` },
+        { transform: 'rotate(15deg)' }
+      ], { duration: 2000, easing: 'ease-out' });
+      returnAnim.finished.then(() => { returnAnim = null; }).catch(() => {});
+    };
+
+    card.addEventListener('mouseenter', () => {
+      if (returnAnim) { returnAnim.cancel(); returnAnim = null; }
+      startSpin();
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (spinAnim && spinAnim.playState !== 'finished') {
+        returnToZero();
+      }
+    });
+  }
+</script>
