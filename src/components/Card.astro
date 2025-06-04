@@ -6,12 +6,27 @@ interface Props {
 const { title, size = 1} = Astro.props;  
 ---  
 
-<div class="card" style={`--scale: ${size}`}>  
-  {title && <h2>{title}</h2>}  
-  <slot />  
-</div>  
+<div class="card" style={`--scale: ${size}`}>
+  {title && <h2>{title}</h2>}
+  <slot />
+</div>
+<script is:inline>
+  if (typeof window !== 'undefined') {
+    const card = document.querySelector('.card');
+    let played = false;
+    const canAnimate = () =>
+      window.matchMedia('(prefers-reduced-motion: no-preference)').matches &&
+      window.matchMedia('(min-width: 700px)').matches &&
+      window.matchMedia('(min-height: 400px)').matches;
+    card.addEventListener('mouseenter', () => {
+      if (played || !canAnimate()) return;
+      played = true;
+      card.classList.add('hover-spin');
+    });
+  }
+</script>
 
-<style>  
+<style>
 .card {
   background: #1e1e1e;
   color: #e0e0e0;
@@ -31,13 +46,18 @@ const { title, size = 1} = Astro.props;
 }
 
 @media (prefers-reduced-motion: no-preference) and (min-width: 700px) and (min-height: 400px) {
-  .card {
-    transition: transform 0.3s ease;
+  .card.hover-spin {
+    animation: spin-jitter 6s ease-out forwards;
   }
+}
 
-  .card:hover {
-    transform: rotate(15deg);
-  }
+@keyframes spin-jitter {
+  0%   { transform: rotate(0deg); }
+  80%  { transform: rotate(360deg); }
+  85%  { transform: rotate(375deg); }
+  90%  { transform: rotate(345deg); }
+  95%  { transform: rotate(375deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @media (max-width: 600px) {
