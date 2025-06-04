@@ -77,16 +77,16 @@ const { title, size = 1} = Astro.props;
 </style>
 
 <script>
-  const card = document.querySelector('.card');
+  const card = document.querySelector('.card') as HTMLElement | null;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const bigViewport = window.matchMedia('(min-width: 700px) and (min-height: 400px)');
 
   if (!prefersReducedMotion.matches && bigViewport.matches && card) {
-    let spinAnim;
-    let returnAnim;
-    let jitterAnim;
+    let spinAnim: Animation | null = null;
+    let returnAnim: Animation | null = null;
+    let jitterAnim: Animation | null = null;
 
-    const currentRotation = () => {
+    const currentRotation = (): number => {
       const { transform } = getComputedStyle(card);
       if (transform === 'none') return 0;
       const matrix = new DOMMatrixReadOnly(transform);
@@ -94,7 +94,7 @@ const { title, size = 1} = Astro.props;
       return (angle + 360) % 360;
     };
 
-    const playJitter = (base) => {
+    const playJitter = (base: number) => {
       jitterAnim?.cancel();
       jitterAnim = card.animate([
         { transform: `rotate(${base}deg)` },
