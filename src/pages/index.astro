@@ -6,8 +6,29 @@ import Card from '../components/Card.astro';
 ---  
 
 <Layout>
-  <Card title="Hey there, I'm Aniruddh">  
-    <!-- Replace with your photo, about-me text, etc. -->  
-    <p>Lorem Ipsum</p>  
-  </Card>  
+  <Card>
+    <div class="profile">
+      <img src="/android-chrome-192x192.png" alt="Aniruddh" />
+      <div class="info">
+        <h3>Aniruddh</h3>
+        <p>I'm Aniruddh Srivastava, an Indian international student studying Computer Science and Computer Engineering at Purdue.</p>
+      </div>
+    </div>
+
+    <style>
+      .profile {
+        display: flex;
+        align-items: center;
+        text-align: left;
+      }
+
+      .profile img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        margin-right: 1rem;
+        border-radius: 8px;
+      }
+    </style>
+  </Card>
 </Layout>
