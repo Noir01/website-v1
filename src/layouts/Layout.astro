@@ -1,5 +1,6 @@
 ---
 import Head from "../components/Head.astro"
+import SpeedInsights from "@vercel/speed-insights/astro"
 ---
 
 
@@ -7,6 +8,7 @@ import Head from "../components/Head.astro"
 <html lang="en">
 
   <Head title="Home" permalink="/" />
+  <SpeedInsights />
   <body>  
     <div id="particle-container">  
       {Array.from({ length: 137 }).map(() => (  
