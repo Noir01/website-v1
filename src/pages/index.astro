@@ -82,12 +82,14 @@ import Card from '../components/Card.astro';
     <script>
       const letters = document.querySelectorAll('.name-heading .letter');
       letters.forEach((letter) => {
-        letter.addEventListener('pointerdown', () => {
-          const el = letter as HTMLElement;
+        const el = letter as HTMLElement;
+        const jump = () => {
           el.classList.remove('jump');
           void el.offsetWidth;
           el.classList.add('jump');
-        });
+        };
+        letter.addEventListener('pointerdown', jump);
+        letter.addEventListener('pointerenter', jump);
       });
     </script>
   </Card>
