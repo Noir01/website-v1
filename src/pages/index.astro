@@ -9,7 +9,7 @@ import Card from '../components/Card.astro';
     <div class="profile">
       <div class="left">
         <img class="avatar" src="/android-chrome-192x192.png" alt="Aniruddh" />
-        <div class="widget" />
+        <div class="widget spotify-widget" />
         <div class="widget" />
       </div>
       <div class="info">
@@ -57,6 +57,51 @@ import Card from '../components/Card.astro';
         border-radius: 4px;
       }
 
+      .spotify-widget {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.2rem;
+        min-height: 24px;
+      }
+
+      .spotify-widget .info {
+        flex: 1;
+        margin-right: 0.25rem;
+        overflow: hidden;
+      }
+
+      .spotify-widget .song {
+        font-size: 0.75rem;
+        color: inherit;
+        text-decoration: none;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .spotify-widget hr {
+        border: none;
+        border-top: 1px solid #555;
+        margin: 2px 0;
+      }
+
+      .spotify-widget .meta {
+        font-size: 0.6rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .spotify-widget .art {
+        width: 24px;
+        height: 24px;
+        object-fit: cover;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+
       .name-heading {
         display: flex;
         gap: 0.1rem;
@@ -91,6 +136,41 @@ import Card from '../components/Card.astro';
         letter.addEventListener('pointerdown', jump);
         letter.addEventListener('pointerenter', jump);
       });
+    </script>
+
+    <script type="module">
+      const widget = document.querySelector('.spotify-widget');
+      if (widget) {
+        fetch('https://spotify.noir.ac/')
+          .then(r => r.json())
+          .then(data => {
+            if (!data.playing) {
+              widget.textContent = 'Not Listening to anything';
+              return;
+            }
+            const info = document.createElement('div');
+            info.className = 'info';
+            const songLink = document.createElement('a');
+            songLink.className = 'song';
+            songLink.href = data.url;
+            songLink.target = '_blank';
+            songLink.rel = 'noopener noreferrer';
+            songLink.textContent = data.song;
+            const hr = document.createElement('hr');
+            const meta = document.createElement('div');
+            meta.className = 'meta';
+            meta.textContent = `${data.artist} | ${data.album}`;
+            info.append(songLink, hr, meta);
+            const art = document.createElement('img');
+            art.className = 'art';
+            art.src = data.album_art;
+            art.alt = 'Album Art';
+            widget.replaceChildren(info, art);
+          })
+          .catch(() => {
+            widget.textContent = 'Not Listening to anything';
+          });
+      }
     </script>
   </Card>
 </Layout>
