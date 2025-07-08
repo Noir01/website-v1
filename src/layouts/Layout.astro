@@ -10,14 +10,9 @@ import Particles from "../scripts/particles"
   <Head title="Home" permalink="/" />
   <SpeedInsights />
   <body>
-    <div style="
-      position: fixed;
-      z-index: 0;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-    ">
+    <div 
+    class="particles-container"
+    >
       <Particles
         client:load
         particleColors={['#ffffff', '#ffffff']}
@@ -41,6 +36,15 @@ import Particles from "../scripts/particles"
 body {
   background: #121212;
   color: #e0e0e0
+}
+
+.particles-container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 .page-content {  
