@@ -9,7 +9,7 @@ import Card from '../components/Card.astro';
     <div class="profile">
       <div class="left">
         <img class="avatar" src="/android-chrome-192x192.png" alt="Aniruddh" />
-        <div class="widget" />
+        <div class="widget spotify-widget" />
         <div class="widget" />
       </div>
       <div class="info">
@@ -57,6 +57,107 @@ import Card from '../components/Card.astro';
         border-radius: 4px;
       }
 
+      .spotify-widget {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.65rem 0.7rem;
+        min-height: 72px;
+        width: 180px;
+        height: auto;
+        color: #f3fbf7;
+        border-radius: 10px;
+        border: 1px solid rgba(29, 185, 84, 0.45);
+        background: radial-gradient(circle at top left, rgba(29, 185, 84, 0.45), rgba(29, 185, 84, 0.15));
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+      }
+
+      .spotify-widget::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(29, 185, 84, 0.12));
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+
+      .spotify-widget .info {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        overflow: hidden;
+      }
+
+      .spotify-widget .song {
+        color: inherit;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .spotify-widget .song:hover,
+      .spotify-widget .song:focus {
+        text-decoration: underline;
+      }
+
+      .spotify-widget hr {
+        margin: 0;
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .spotify-widget .meta {
+        font-size: 0.65rem;
+        color: rgba(243, 251, 247, 0.8);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .spotify-widget .art-wrapper {
+        position: relative;
+        z-index: 1;
+        width: 52px;
+        height: 52px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+      }
+
+      .spotify-widget .art {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .spotify-widget.idle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem;
+        text-align: center;
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: rgba(243, 251, 247, 0.8);
+        background: rgba(22, 27, 25, 0.8);
+        border: 1px dashed rgba(243, 251, 247, 0.25);
+        box-shadow: none;
+        gap: 0;
+      }
+
+      .spotify-widget.idle::after {
+        display: none;
+      }
+
       .name-heading {
         display: flex;
         gap: 0.1rem;
@@ -91,6 +192,68 @@ import Card from '../components/Card.astro';
         letter.addEventListener('pointerdown', jump);
         letter.addEventListener('pointerenter', jump);
       });
+    </script>
+
+    <script type="module">
+      const widget = document.querySelector('.spotify-widget');
+      if (widget) {
+        const setIdle = (message) => {
+          widget.classList.add('idle');
+          widget.textContent = message;
+        };
+
+        const setActive = () => {
+          widget.classList.remove('idle');
+          widget.innerHTML = '';
+        };
+
+        setIdle('Loading Spotify…');
+
+        fetch('https://spotify.noir.ac/')
+          .then((r) => r.json())
+          .then((data) => {
+            if (!data.playing) {
+              setIdle('Not listening to anything right now');
+              return;
+            }
+
+            setActive();
+
+            const info = document.createElement('div');
+            info.className = 'info';
+
+            const songLink = document.createElement('a');
+            songLink.className = 'song';
+            songLink.href = data.url;
+            songLink.target = '_blank';
+            songLink.rel = 'noopener noreferrer';
+            songLink.textContent = data.song;
+            songLink.title = data.song;
+
+            const hr = document.createElement('hr');
+
+            const meta = document.createElement('div');
+            meta.className = 'meta';
+            meta.textContent = `${data.artist} | ${data.album}`;
+
+            info.append(songLink, hr, meta);
+
+            const artWrapper = document.createElement('div');
+            artWrapper.className = 'art-wrapper';
+
+            const art = document.createElement('img');
+            art.className = 'art';
+            art.src = data.album_art;
+            art.alt = `${data.album} album art`;
+
+            artWrapper.append(art);
+
+            widget.append(info, artWrapper);
+          })
+          .catch(() => {
+            setIdle('Unable to reach Spotify');
+          });
+      }
     </script>
   </Card>
 </Layout>
