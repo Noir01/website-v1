@@ -2,6 +2,11 @@
 import Head from "../components/Head.astro"
 import SpeedInsights from "@vercel/speed-insights/astro"
 import Particles from "../scripts/particles"
+import MultiplayerCursors from "../components/MultiplayerCursors"
+import "../styles/multiplayer-cursors.css"
+
+// Get the PartyKit host from environment or use default for development
+const PARTYKIT_HOST = import.meta.env.PUBLIC_PARTYKIT_HOST || "localhost:1999"
 ---
 
 
@@ -10,7 +15,8 @@ import Particles from "../scripts/particles"
   <Head title="Home" permalink="/" />
   <SpeedInsights />
   <body>
-    <div 
+    <MultiplayerCursors client:only="react" host={PARTYKIT_HOST} room="main" />
+    <div
     class="particles-container"
     >
       <Particles
@@ -25,9 +31,9 @@ import Particles from "../scripts/particles"
         disableRotation={false}
       />
     </div>
-    <div class="page-content">  
-      <slot />  
-    </div>  
+    <div class="page-content">
+      <slot />
+    </div>
   </body>  
 </html>  
 

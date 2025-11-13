@@ -9,7 +9,9 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "partykit:dev": "partykit dev",
+    "partykit:deploy": "partykit deploy"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.5",
@@ -22,6 +24,8 @@
     "@vercel/speed-insights": "^1.2.0",
     "astro": "^5.14.8",
     "ogl": "^1.0.11",
+    "partykit": "^0.0.115",
+    "partysocket": "^1.1.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwindcss": "^4.1.11",

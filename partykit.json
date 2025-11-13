@@ -1,0 +1,5 @@
+{
+  "name": "portfolio-cursor",
+  "main": "party/cursor.ts",
+  "compatibilityDate": "2024-01-01"
+}
