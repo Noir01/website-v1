@@ -28,12 +28,12 @@ You need to run **two** servers:
    yarn dev
    ```
 
-2. **PartyServer dev server** (WebSocket server):
+2. **PartyServer dev server** (WebSocket server via Wrangler):
    ```bash
-   yarn partykit:dev
+   yarn party:dev
    ```
 
-The PartyServer runs on `localhost:1999` by default.
+The PartyServer runs on `localhost:8787` by default (Wrangler's default port).
 
 ### Testing
 
@@ -45,18 +45,21 @@ The PartyServer runs on `localhost:1999` by default.
 
 ### Deploy PartyServer to Cloudflare Workers
 
-1. **Login to PartyServer** (first time only):
+PartyServer uses **Wrangler** (Cloudflare's official CLI) for deployment, not the old PartyKit CLI.
+
+1. **Login to Cloudflare** (first time only):
    ```bash
-   npx partykit login
+   npx wrangler login
    ```
+   This will open your browser to authenticate with your Cloudflare account.
 
 2. **Deploy the server**:
    ```bash
-   yarn partykit:deploy
+   yarn party:deploy
    ```
 
 3. **Get your PartyServer URL**:
-   After deployment, you'll receive a URL like: `your-project.username.partykit.dev`
+   After deployment, you'll receive a URL like: `portfolio-multiplayer-cursor.YOUR_SUBDOMAIN.workers.dev`
 
 ### Configure Production Environment
 
@@ -65,9 +68,11 @@ Add the PartyServer URL to your Vercel environment variables:
 1. Go to your Vercel project settings
 2. Add environment variable:
    - **Name**: `PUBLIC_PARTYKIT_HOST`
-   - **Value**: `your-project.username.partykit.dev` (without `https://`)
+   - **Value**: `portfolio-multiplayer-cursor.YOUR_SUBDOMAIN.workers.dev` (without `https://`)
 
 3. Redeploy your Astro site
+
+**Note**: You can also set a custom domain for your Worker in the Cloudflare dashboard.
 
 ## How It Works
 
@@ -132,21 +137,34 @@ Perfect for portfolio websites!
 
 Make sure both servers are running:
 - Astro: `yarn dev` → http://localhost:4321
-- PartyServer: `yarn partykit:dev` → http://localhost:1999
+- PartyServer: `yarn party:dev` → http://localhost:8787
+
+**Important**: Update your `.env` or environment to point to the correct local port:
+```env
+PUBLIC_PARTYKIT_HOST=localhost:8787
+```
 
 ### Cursors not appearing in production
 
-1. Check PartyServer deployment: `yarn partykit:deploy`
+1. Check PartyServer deployment: `yarn party:deploy`
 2. Verify environment variable in Vercel: `PUBLIC_PARTYKIT_HOST`
 3. Ensure the value doesn't include `https://`
+4. Check your Cloudflare Workers dashboard for deployment status
 
 ### Package Information
 
 This project uses Cloudflare's maintained fork:
-- Package: `partyserver` (not `partykit`)
-- WebSocket client: `partysocket`
-- GitHub: https://github.com/cloudflare/partykit
-- Note: The original `partykit/partykit` is unmaintained and should not be used
+- **Server package**: `partyserver` (not the old `partykit`)
+- **WebSocket client**: `partysocket`
+- **Deployment tool**: `wrangler` (Cloudflare's official CLI)
+- **GitHub**: https://github.com/cloudflare/partykit
+- **Note**: The original `partykit/partykit` is unmaintained and should not be used
+
+### Configuration Files
+
+- **wrangler.json**: Cloudflare Workers configuration (defines Durable Objects)
+- **party/cursor.ts**: Your PartyServer implementation
+- No `partykit.json` needed (that was for the old unmaintained version)
 
 ### Too many cursors
 

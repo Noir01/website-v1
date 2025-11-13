@@ -1,0 +1,19 @@
+{
+  "name": "portfolio-multiplayer-cursor",
+  "main": "party/cursor.ts",
+  "compatibility_date": "2024-01-01",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "CursorServer",
+        "class_name": "CursorServer"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["CursorServer"]
+    }
+  ]
+}

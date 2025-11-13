@@ -10,8 +10,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "partykit:dev": "partykit dev",
-    "partykit:deploy": "partykit deploy"
+    "party:dev": "wrangler dev",
+    "party:deploy": "wrangler deploy"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.5",
@@ -33,7 +33,8 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251111.0",
-    "sass": "^1.77.5"
+    "sass": "^1.77.5",
+    "wrangler": "^4.47.0"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
