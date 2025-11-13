@@ -9,9 +9,7 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "party:dev": "wrangler dev",
-    "party:deploy": "wrangler deploy"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.5",
@@ -24,17 +22,13 @@
     "@vercel/speed-insights": "^1.2.0",
     "astro": "^5.14.8",
     "ogl": "^1.0.11",
-    "partyserver": "^0.0.75",
-    "partysocket": "^1.1.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20251111.0",
-    "sass": "^1.77.5",
-    "wrangler": "^4.47.0"
+    "sass": "^1.77.5"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
