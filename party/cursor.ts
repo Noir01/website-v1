@@ -1,10 +1,4 @@
-import type * as Party from "partykit/server";
-
-interface CursorPosition {
-  x: number;
-  y: number;
-  userId: string;
-}
+import { Server, type Connection, type ConnectionContext } from "partyserver";
 
 interface CursorMessage {
   type: "cursor-move" | "cursor-leave";
@@ -13,10 +7,8 @@ interface CursorMessage {
   userId: string;
 }
 
-export default class CursorServer implements Party.Server {
-  constructor(readonly room: Party.Room) {}
-
-  onConnect(conn: Party.Connection, ctx: Party.ConnectionContext) {
+export default class CursorServer extends Server {
+  onConnect(conn: Connection, ctx: ConnectionContext) {
     // Notify the user they've connected
     conn.send(
       JSON.stringify({
@@ -26,7 +18,7 @@ export default class CursorServer implements Party.Server {
     );
 
     // Notify others that a new user joined
-    this.room.broadcast(
+    this.broadcast(
       JSON.stringify({
         type: "user-joined",
         userId: conn.id,
@@ -35,28 +27,31 @@ export default class CursorServer implements Party.Server {
     );
   }
 
-  onMessage(message: string, sender: Party.Connection) {
+  onMessage(conn: Connection, message: string | ArrayBuffer | ArrayBufferView) {
     try {
+      // Handle string messages only (ignore binary messages)
+      if (typeof message !== "string") return;
+
       const data = JSON.parse(message) as CursorMessage;
 
       // Broadcast cursor position to all other connections
-      this.room.broadcast(
+      this.broadcast(
         JSON.stringify({
           type: data.type,
           x: data.x,
           y: data.y,
-          userId: sender.id,
+          userId: conn.id,
         }),
-        [sender.id] // Exclude sender
+        [conn.id] // Exclude sender
       );
     } catch (error) {
       console.error("Error parsing message:", error);
     }
   }
 
-  onClose(conn: Party.Connection) {
+  onClose(conn: Connection) {
     // Notify others that user left
-    this.room.broadcast(
+    this.broadcast(
       JSON.stringify({
         type: "user-left",
         userId: conn.id,
@@ -64,5 +59,3 @@ export default class CursorServer implements Party.Server {
     );
   }
 }
-
-CursorServer satisfies Party.Worker;
