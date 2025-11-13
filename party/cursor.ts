@@ -1,4 +1,9 @@
-import { Server, type Connection, type ConnectionContext } from "partyserver";
+import {
+  Server,
+  routePartykitRequest,
+  type Connection,
+  type ConnectionContext,
+} from "partyserver";
 
 interface CursorMessage {
   type: "cursor-move" | "cursor-leave";
@@ -7,7 +12,11 @@ interface CursorMessage {
   userId: string;
 }
 
-export default class CursorServer extends Server {
+type Env = {
+  CursorServer: DurableObjectNamespace<CursorServer>;
+};
+
+export class CursorServer extends Server {
   onConnect(conn: Connection, ctx: ConnectionContext) {
     // Notify the user they've connected
     conn.send(
@@ -59,3 +68,12 @@ export default class CursorServer extends Server {
     );
   }
 }
+
+export default {
+  async fetch(request: Request, env: Env) {
+    return (
+      (await routePartykitRequest(request, env)) ??
+      new Response("Not Found", { status: 404 })
+    );
+  },
+};
