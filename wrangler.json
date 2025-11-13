@@ -5,7 +5,7 @@
   "durable_objects": {
     "bindings": [
       {
-        "name": "CursorServer",
+        "name": "main",
         "class_name": "CursorServer"
       }
     ]
